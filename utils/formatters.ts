@@ -2,6 +2,8 @@
 //   const parsed = parseFloat(amount);
 //   if (isNaN(parsed)) return 'KES 0.00';
 
+import { CURRENCIES } from "@/constants/constants";
+
 //   return `${country} ${parsed.toLocaleString('en-KE', {
 //     minimumFractionDigits: 2,
 //     maximumFractionDigits: 2,
@@ -20,10 +22,13 @@ export const currencyMap: Record<string, { symbol: string; flag: string; name: s
   }
 export const formatCurrency = (amount: string, country: string): string => {
   const parsed = parseFloat(amount);
-  if (isNaN(parsed)) return 'KES 0.00';
-  const { locale, currency } = currencyMap[country] || currencyMap['KE'];
 
-  return new Intl.NumberFormat(locale, {
+  if (isNaN(parsed)) return 'KES 0.00';
+
+  // const { locale, currency } = currencyMap[country] || currencyMap['KE'];
+  const currency = CURRENCIES.find(curr => curr.token === country)?.code
+
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,

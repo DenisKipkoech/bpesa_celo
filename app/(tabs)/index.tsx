@@ -56,7 +56,7 @@ interface Transaction {
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { walletAddress, phoneNumber, country } = useWalletStore();
+  const { walletAddress, phoneNumber, country, currency } = useWalletStore();
   // const recentTransactions = mockTransactions.slice(0, 5);
   const [recentTransactions, setRecentTransactions] = useState<Transaction[]>(
     []
@@ -68,7 +68,7 @@ export default function HomeScreen() {
   useEffect(() => {
     if (!walletAddress) return;
 
-    getCkesBalance(walletAddress).then(setBalance).catch(console.error);
+    getCkesBalance(walletAddress, currency).then(setBalance).catch(console.error);
 
     getUserTransactions(walletAddress)
       .then((txs) => {
@@ -161,7 +161,7 @@ export default function HomeScreen() {
     if (!walletAddress) return;
     try {
       setIsRefreshing(true);
-      const latest = await getCkesBalance(walletAddress);
+      const latest = await getCkesBalance(walletAddress, currency);
       console.log(latest);
       setBalance(latest);
     } catch (err) {
@@ -213,7 +213,7 @@ export default function HomeScreen() {
         phoneNumber={phoneNumber || "Loading..."}
         walletAddress={walletAddress || ""}
         networkName={network.name}
-        country={country}
+        country={currency}
         onRefresh={refreshBalance}
         isRefreshing={isRefreshing}
       />

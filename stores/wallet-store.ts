@@ -28,12 +28,14 @@ interface WalletState {
   walletAddress: string | null;
   phoneNumber: string | null;
   country:string;
+  currency:string;
   isPinSet: boolean;
   isUnlocking: boolean;
   isUnlocked: boolean;
   recoveryKeysBackedUp: boolean;
   _hasHydrated: boolean,
-  createWallet: (pin: string,country:string,user_id: string,notification_token: string) => Promise<{ mnemonic: string; address: string; phoneNumber: string }>;
+  updateCurrency: (currency: string) => void;
+  createWallet: (pin: string,country:string,user_id: string,notification_token: string, currency:string) => Promise<{ mnemonic: string; address: string; phoneNumber: string }>;
   unlockWallet: (pin: string) => Promise<boolean>;
   lockWallet: () => void;
   resetWalletApp: () => void;
@@ -55,10 +57,12 @@ export const useWalletStore = create<WalletState>()(
       phoneNumber: null,
       isPinSet: false,
       country:"",
+      currency:"",
       isUnlocking: false,
       isUnlocked: false,
       recoveryKeysBackedUp: false,
       _hasHydrated: false,
+      updateCurrency: (currency) => set({currency: currency}),
       setHasHydrated: (value) => set({ _hasHydrated: value }),
       resetWalletApp: async () => {
         try {
@@ -82,7 +86,7 @@ export const useWalletStore = create<WalletState>()(
         }
       },
 
-      createWallet: async (pin: string,country:string,user_id: string,notification_token: string) => {
+      createWallet: async (pin: string,country:string,user_id: string,notification_token: string, currency:string) => {
         try {
           console.log('Creating account with crypto polyfill...');
           console.log(pin,country,user_id,notification_token)
@@ -110,7 +114,8 @@ export const useWalletStore = create<WalletState>()(
                 phoneNumber,
                 isPinSet: true,
                 isUnlocked: true,
-                country:country
+                country:country,
+                currency: currency
               });
 
               console.log('Wallet created successfully');

@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { PinInput } from '@/components/PinInput';
 import { useWalletStore } from '@/stores/wallet-store';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CURRENCIES } from '@/constants/constants';
 
 export default function PinSetupScreen() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function PinSetupScreen() {
           await new Promise(resolve => setTimeout(resolve, 800));
           
           setProcessingStep('Creating account...');
-          const { mnemonic, address } = await createWallet(enteredPin, country, id, expoToken);
+          const { mnemonic, address } = await createWallet(enteredPin, country, id, expoToken, CURRENCIES[0].token);
           
           setProcessingStep('Finalizing setup...');
           await new Promise(resolve => setTimeout(resolve, 500));

@@ -33,7 +33,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       style={styles.container}
     >
       <View style={styles.content}>
-        <Text style={styles.balanceLabel}>Current:`</Text>
+        <Text style={styles.balanceLabel}>Current Balance</Text>
         <Text style={styles.balanceAmount}>{formatCurrency(balance,country)}</Text>
         
         <View style={styles.divider} />
@@ -60,7 +60,9 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
           )}
         </TouchableOpacity> */}
 
-        <CurrencySwitcher />
+       <View style={styles.refreshButton}>
+         <CurrencySwitcher isRefreshing={isRefreshing} onRefresh={onRefresh} />
+       </View>
       </View>
     </LinearGradient>
   );
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 16,
+    color:'white',
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 12,
     paddingHorizontal: 8,
